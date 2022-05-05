@@ -1,9 +1,19 @@
 const express = require('express')
+const cors = require('cors')
 var morgan = require('morgan')
 var split = require('split')
 const { c } = require('tar')
 const app = express()
-const PORT = 3001
+const PORT = process.env.PORT || 3001
+
+const corsOptions ={
+    origin:'http://localhost:3000', 
+    credentials:true,
+    optionSuccessStatus:200
+}
+
+app.use(cors(corsOptions))
+
 
 app.use(express.json())
 
@@ -17,22 +27,22 @@ let persons =
     [{
         id: 1,
         name: "Arto Hellas",
-        number: "040-123456"
+        num: "040-123456"
     }, 
     {
         id: 2,
         name: "Ada Lovelace",
-        number: "39-44-5323523"
+        num: "39-44-5323523"
     },
     {
         id: 3,
         name: "Dan Abramov",
-        number: "12-43-234345"
+        num: "12-43-234345"
     },
     {
         id: 4,
         name: "Mary Poppendick",
-        number: "39-23-6423122"
+        num: "39-23-6423122"
     }]
 
 const message = `Phonebook has info for ${persons.length} <br/><br/> ${new Date()}`
@@ -65,7 +75,7 @@ app.post('/api/persons', (request, response) => {
     
     if (!person.hasOwnProperty('name')) {
         response.status(400).json( { error: 'no name' })
-    } else if (!person.hasOwnProperty('number')) {
+    } else if (!person.hasOwnProperty('num')) {
         response.status(400).json( { error: 'no number' })
     } else if (persons.find(object => object.name == person.name)) {
         response.status(400).json( { error: 'name must be unique' })
