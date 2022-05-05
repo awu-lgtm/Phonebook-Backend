@@ -14,7 +14,7 @@ const corsOptions ={
 
 app.use(cors(corsOptions))
 
-
+app.use(express.static('build'))
 app.use(express.json())
 
 morgan.token('content', (request, response) => JSON.stringify(request.body))
